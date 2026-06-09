@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 全局基础样式 */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #070711;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* 自定义滚动条，让整体更有科技感 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #070711;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4bff5e;
+  border-radius: 999px;
+}
+
+/* 背景网格效果 */
+.tech-grid {
+  background-image:
+    linear-gradient(rgba(75, 255, 94, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(191, 151, 210, 0.08) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+
+/* Hero 背景光效 */
+.hero-gradient {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(75, 255, 94, 0.28), transparent 30%),
+    radial-gradient(circle at 80% 30%, rgba(191, 151, 210, 0.22), transparent 32%),
+    radial-gradient(circle at 50% 90%, rgba(75, 255, 94, 0.12), transparent 35%),
+    #070711;
+}
+
+/* 滚动出现动画：默认隐藏 */
+.reveal {
+  opacity: 0;
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s ease;
+}
+
+/* 从左进入 */
+.reveal-left {
+  transform: translateX(-80px);
+}
+
+/* 从右进入 */
+.reveal-right {
+  transform: translateX(80px);
+}
+
+/* 从下进入 */
+.reveal-up {
+  transform: translateY(80px);
+}
+
+/* 元素进入视口后添加 active */
+.reveal.active {
+  opacity: 1;
+  transform: translateX(0) translateY(0);
+}
+
+/* 卡片悬停发光效果 */
+.glow-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glow-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(
+    135deg,
+    rgba(75, 255, 94, 0.45),
+    rgba(191, 151, 210, 0.45),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: 0;
+}
+
+.glow-card:hover::before {
+  opacity: 1;
+}
+
+.glow-card-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero 标题浮动动画 */
+@keyframes floatSlow {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-14px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.float-slow {
+  animation: floatSlow 4s ease-in-out infinite;
+}
