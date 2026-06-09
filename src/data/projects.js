@@ -1,77 +1,116 @@
-// Demo 项目数据
-// 后期可以替换成后端 API 返回的数据
+// 静态 Demo 数据
+// 当前网站无数据库，所有项目、报名、用户信息都用前端模拟
 
 export const demoProjects = [
   {
     id: 1,
-    name: "AI 视觉识别助手",
-    theme: "使用计算机视觉识别日常物体",
-    stage: "早期",
-    tags: ["#计算机视觉", "#图像识别", "#Python"],
-    star: 28,
-    demoUrl: "#",
-    githubUrl: "https://github.com/demo/vision-ai",
-    description:
-      "一个面向初学者的视觉识别项目，目标是训练模型识别校园或生活中的常见物体。"
+    name: "强化学习游戏 AI 对战平台",
+    theme: "使用强化学习训练游戏智能体",
+    author: "李明远",
+    avatar: "李",
+    stage: "后期",
+    tags: ["#强化学习", "#Python", "#游戏AI"],
+    star: 142,
+    aiScore: 95,
+    applicants: 3,
+    isMine: true,
+    githubUrl: "https://github.com/demo/rl-game-ai",
+    demoHtml:
+      "<div style='background:#1a1a2e;padding:20px;color:#eee;font-family:monospace;border-radius:8px'>Episode 1000 | Win Rate: 87.3%<br/>Avg Reward: +24.6<br/>Training: ███████████░░░ 72%</div>",
+    readme:
+      "本项目基于 PPO 算法，实现多智能体对战游戏 AI。目前支持五子棋、贪吃蛇等经典游戏。核心算法已经完成，正在优化多智能体通信协议。"
   },
   {
     id: 2,
-    name: "机器人手臂控制系统",
-    theme: "具身智能与机器人控制",
+    name: "多模态情感识别系统",
+    theme: "融合表情、语音、文本进行情感识别",
+    author: "陈思远",
+    avatar: "陈",
     stage: "中期",
-    tags: ["#机器人", "#具身智能", "#控制系统"],
-    star: 42,
-    demoUrl: "#",
-    githubUrl: "https://github.com/demo/robot-arm",
-    description:
-      "通过摄像头和传感器控制机械臂完成简单抓取动作，适合对机器人感兴趣的成员加入。"
+    tags: ["#计算机视觉", "#NLP", "#情感分析"],
+    star: 98,
+    aiScore: 88,
+    applicants: 1,
+    isMine: false,
+    githubUrl: "https://github.com/demo/multimodal-emotion",
+    demoHtml: "",
+    readme:
+      "融合面部表情、语音音调、文本语义三路信号，实现高精度情感识别。当前需要熟悉音频处理或前端展示的小伙伴加入。"
   },
   {
     id: 3,
-    name: "多模态学习助手",
-    theme: "文本、图片、语音结合的 AI 学习助手",
-    stage: "后期",
-    tags: ["#多模态", "#大语言模型", "#教育AI"],
-    star: 57,
-    demoUrl: "#",
-    githubUrl: "https://github.com/demo/multimodal-study",
-    description:
-      "一个帮助学生整理知识点、生成学习计划、识别图片内容的多模态 AI 助手。"
+    name: "具身智能机器人控制",
+    theme: "机器人控制与具身智能实验",
+    author: "王子轩",
+    avatar: "王",
+    stage: "早期",
+    tags: ["#具身智能", "#ROS", "#机器人"],
+    star: 67,
+    aiScore: 82,
+    applicants: 0,
+    isMine: false,
+    githubUrl: "",
+    demoHtml: "",
+    readme:
+      "项目目标是构建一个简单机器人控制 Demo，使用摄像头和传感器完成基础抓取与避障任务。"
   },
   {
     id: 4,
-    name: "AI 音乐生成器",
-    theme: "使用 AI 生成旋律和节奏",
-    stage: "早期",
-    tags: ["#生成式AI", "#音乐", "#创意工具"],
-    star: 19,
-    demoUrl: "#",
-    githubUrl: "",
-    description:
-      "尝试用简单模型生成短旋律，适合喜欢音乐和 AI 创作的同学一起探索。"
+    name: "AI 作曲与旋律生成",
+    theme: "使用 Transformer 生成旋律",
+    author: "张晓雨",
+    avatar: "张",
+    stage: "结项",
+    tags: ["#生成式AI", "#音乐", "#Transformer"],
+    star: 203,
+    aiScore: 91,
+    applicants: 0,
+    isMine: false,
+    githubUrl: "https://github.com/demo/ai-composer",
+    demoHtml:
+      "<div style='background:#fff;padding:16px;color:#222;border-radius:8px'><b>AI 旋律生成器</b><br/><br/>♩ ♪ ♫ ♬ — 生成中 ...</div>",
+    readme:
+      "基于 Transformer 的旋律生成模型，支持指定风格生成 8-32 小节旋律。项目已完成基础版本。"
   },
   {
     id: 5,
     name: "校园智能问答 Bot",
-    theme: "面向校园信息的智能问答系统",
+    theme: "面向校园资料的智能问答系统",
+    author: "林可",
+    avatar: "林",
     stage: "中期",
     tags: ["#大语言模型", "#RAG", "#校园应用"],
-    star: 36,
-    demoUrl: "#",
+    star: 76,
+    aiScore: 86,
+    applicants: 2,
+    isMine: false,
     githubUrl: "https://github.com/demo/campus-bot",
-    description:
-      "通过接入学校资料、活动信息和常见问题，制作一个校园智能问答机器人。"
+    demoHtml: "",
+    readme:
+      "通过接入学校资料、活动信息和常见问题，制作一个校园智能问答机器人。当前重点是资料检索和回答准确率优化。"
+  }
+];
+
+export const demoApplicants = [
+  {
+    id: 1,
+    name: "陈思远",
+    avatar: "陈",
+    intro: "擅长 PyTorch、计算机视觉，有两段项目经历",
+    remain: "5h 剩余"
   },
   {
-    id: 6,
-    name: "AI 绘画提示词平台",
-    theme: "Prompt 分享与图像生成",
-    stage: "结项",
-    tags: ["#AIGC", "#Prompt", "#图像生成"],
-    star: 63,
-    demoUrl: "#",
-    githubUrl: "https://github.com/demo/prompt-gallery",
-    description:
-      "一个整理、展示和分享 AI 绘画提示词的平台，已经完成基础版本。"
+    id: 2,
+    name: "张晓雨",
+    avatar: "张",
+    intro: "熟悉 React、数据可视化和前端交互",
+    remain: "23h 剩余"
+  },
+  {
+    id: 3,
+    name: "王子轩",
+    avatar: "王",
+    intro: "NLP 方向，熟悉 Transformer 架构",
+    remain: "48h 剩余"
   }
 ];
