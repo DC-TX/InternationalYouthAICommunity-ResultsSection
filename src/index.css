@@ -123,3 +123,33 @@ body {
 .float-slow {
   animation: floatSlow 4s ease-in-out infinite;
 }
+/* 页面切换淡入 */
+.page-fade {
+  animation: pageFade 0.35s ease both;
+}
+
+@keyframes pageFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal 内容最大高度，避免小屏幕溢出 */
+.modal-scroll {
+  max-height: 86vh;
+  overflow-y: auto;
+}
+
+/* 表单控件在深色背景里更自然 */
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+}
