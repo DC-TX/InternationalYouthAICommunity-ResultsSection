@@ -12,12 +12,14 @@ export default function App() {
   return (
     <div className="min-h-screen bg-iyaiBlack text-white overflow-x-hidden">
       <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+
       <main className="page-fade">
         {currentPage === "home" && <HomePage setCurrentPage={setCurrentPage} />}
         {currentPage === "results" && <ResultsPage />}
         {currentPage === "projects" && <ProjectsPage />}
         {currentPage === "profile" && <ProfilePage />}
       </main>
+
       <Footer />
     </div>
   );
