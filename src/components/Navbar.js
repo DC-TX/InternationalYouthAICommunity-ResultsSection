@@ -46,7 +46,7 @@ export default function Navbar({ currentPage, setCurrentPage }) {
         </div>
 
         {/* 右上角用户系统 */}
-        <UserMenu />
+        <UserMenu setCurrentPage={setCurrentPage} />
       </nav>
     </header>
   );
