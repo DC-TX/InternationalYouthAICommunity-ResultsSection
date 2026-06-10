@@ -11,8 +11,9 @@ export default function Navbar({ currentPage, setCurrentPage }) {
   return (
     <header className="fixed top-0 left-0 z-50 w-full">
       <nav className="mx-auto mt-4 flex w-[92%] max-w-7xl items-center justify-between rounded-2xl border border-white/10 bg-black/60 px-6 py-4 backdrop-blur-xl">
-        {/* Logo */}
+        {/* 左侧 Logo */}
         <button
+          type="button"
           onClick={() => setCurrentPage("home")}
           className="flex items-center gap-3 text-left"
         >
@@ -28,10 +29,11 @@ export default function Navbar({ currentPage, setCurrentPage }) {
           </div>
         </button>
 
-        {/* 主导航 */}
+        {/* 中间导航 */}
         <div className="hidden items-center gap-3 md:flex">
           {navItems.map(item => (
             <button
+              type="button"
               key={item.key}
               onClick={() => setCurrentPage(item.key)}
               className={`rounded-xl px-4 py-2 text-sm font-bold transition ${
