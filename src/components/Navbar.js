@@ -9,37 +9,37 @@ export default function Navbar({ currentPage, setCurrentPage }) {
   ];
 
   return (
-    <header className="fixed top-0 left-0 z-50 w-full">
-      <nav className="mx-auto mt-4 flex w-[92%] max-w-7xl items-center justify-between rounded-2xl border border-white/10 bg-black/60 px-6 py-4 backdrop-blur-xl">
-        {/* 左侧 Logo */}
+    <header className="fixed left-0 top-0 z-50 w-full px-4 pt-4">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between rounded-xl border border-line bg-bone/90 px-4 py-3 backdrop-blur-md">
         <button
           type="button"
           onClick={() => setCurrentPage("home")}
           className="flex items-center gap-3 text-left"
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-iyaiGreen text-lg font-black text-iyaiDark shadow-glowGreen">
+          <div className="flex h-9 w-9 items-center justify-center rounded-md border border-line bg-white font-serif text-lg font-bold text-ink">
             AI
           </div>
 
           <div>
-            <p className="text-sm font-bold tracking-widest text-white">
-              IYAI COMMUNITY
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-ink">
+              IYAI
             </p>
-            <p className="text-xs text-white/50">International Youth AI</p>
+            <p className="hidden text-xs text-mute sm:block">
+              International Youth AI Community
+            </p>
           </div>
         </button>
 
-        {/* 中间导航 */}
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-1 md:flex">
           {navItems.map(item => (
             <button
-              type="button"
               key={item.key}
+              type="button"
               onClick={() => setCurrentPage(item.key)}
-              className={`rounded-xl px-4 py-2 text-sm font-bold transition ${
+              className={`rounded-md px-4 py-2 text-sm transition ${
                 currentPage === item.key
-                  ? "bg-iyaiGreen text-iyaiDark shadow-glowGreen"
-                  : "text-white/70 hover:bg-white/10 hover:text-white"
+                  ? "bg-ink text-white"
+                  : "text-mute hover:bg-white hover:text-ink"
               }`}
             >
               {item.label}
@@ -47,7 +47,6 @@ export default function Navbar({ currentPage, setCurrentPage }) {
           ))}
         </div>
 
-        {/* 右上角用户系统 */}
         <UserMenu setCurrentPage={setCurrentPage} />
       </nav>
     </header>
