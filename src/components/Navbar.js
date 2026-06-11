@@ -10,21 +10,21 @@ export default function Navbar({ currentPage, setCurrentPage }) {
 
   return (
     <header className="fixed left-0 top-0 z-50 w-full px-4 pt-4">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between rounded-xl border border-line bg-bone/90 px-4 py-3 backdrop-blur-md">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between rounded-2xl border border-white/10 bg-[#080C16]/75 px-5 py-3 shadow-soft backdrop-blur-2xl">
         <button
           type="button"
           onClick={() => setCurrentPage("home")}
           className="flex items-center gap-3 text-left"
         >
-          <div className="flex h-9 w-9 items-center justify-center rounded-md border border-line bg-white font-serif text-lg font-bold text-ink">
+          <div className="gradient-border flex h-10 w-10 items-center justify-center rounded-xl bg-white/5 font-serif text-lg font-black text-white">
             AI
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-ink">
+            <p className="text-xs font-black uppercase tracking-[0.26em] text-white">
               IYAI
             </p>
-            <p className="hidden text-xs text-mute sm:block">
+            <p className="hidden text-xs text-white/45 sm:block">
               International Youth AI Community
             </p>
           </div>
@@ -36,10 +36,10 @@ export default function Navbar({ currentPage, setCurrentPage }) {
               key={item.key}
               type="button"
               onClick={() => setCurrentPage(item.key)}
-              className={`rounded-md px-4 py-2 text-sm transition ${
+              className={`rounded-xl px-5 py-2 text-sm font-bold transition ${
                 currentPage === item.key
-                  ? "bg-ink text-white"
-                  : "text-mute hover:bg-white hover:text-ink"
+                  ? "bg-white text-[#070A12]"
+                  : "text-white/55 hover:bg-white/10 hover:text-white"
               }`}
             >
               {item.label}
