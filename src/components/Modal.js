@@ -11,22 +11,22 @@ export default function Modal({
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/30 px-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 px-4 backdrop-blur-xl"
       onClick={onClose}
     >
       <div
-        className={`modal-scroll w-full ${width} rounded-xl border border-line bg-white p-6 shadow-soft`}
+        className={`modal-scroll w-full ${width} rounded-[1.75rem] border border-white/10 bg-[#080D1D]/95 p-6 shadow-[0_30px_120px_rgba(0,0,0,0.55)]`}
         onClick={event => event.stopPropagation()}
       >
-        <div className="mb-5 flex items-start justify-between gap-4 border-b border-line pb-4">
-          <h3 className="font-serif text-3xl leading-tight tracking-[-0.03em] text-ink">
+        <div className="mb-5 flex items-start justify-between gap-4 border-b border-white/10 pb-4">
+          <h3 className="text-3xl font-black leading-tight tracking-[-0.04em] text-white">
             {title}
           </h3>
 
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md border border-line px-3 py-1.5 text-sm text-mute hover:bg-paper hover:text-ink"
+            className="rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2 text-sm font-bold text-white/60 transition hover:bg-white/10 hover:text-white"
           >
             关闭
           </button>
