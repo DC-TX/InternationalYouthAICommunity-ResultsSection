@@ -12,17 +12,19 @@ export default function ProfilePage() {
   }
 
   return (
-    <section className="min-h-screen px-6 pb-24 pt-36">
+    <section className="dark-page-section min-h-screen px-6 pb-24 pt-36">
       <div className="mx-auto max-w-7xl">
         <Reveal>
           <div className="mb-10">
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-mute">
+            <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#4BFF5E]">
               GitHub style user profile
             </p>
-            <h1 className="mt-4 font-serif text-6xl tracking-[-0.045em] text-ink">
+
+            <h1 className="mt-4 text-6xl font-black tracking-[-0.055em] text-white">
               我的主页
             </h1>
-            <p className="mt-5 max-w-2xl leading-8 text-mute">
+
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-white/58">
               用户主页用于展示账号信息、GitHub 绑定、我的项目、收到的 Star 和仓库同步情况。
             </p>
           </div>
@@ -32,22 +34,22 @@ export default function ProfilePage() {
           <Reveal>
             <SpotlightCard className="p-6">
               <div className="flex items-start gap-5">
-                <div className="flex h-20 w-20 items-center justify-center rounded-md bg-github text-3xl font-bold text-white">
+                <div className="flex h-24 w-24 items-center justify-center rounded-3xl bg-white text-4xl font-black text-[#07100A]">
                   {user.avatar}
                 </div>
 
                 <div>
-                  <p className="text-2xl font-semibold text-ink">{user.username}</p>
-                  <p className="font-mono text-sm text-mute">@{user.handle}</p>
-                  <p className="mt-2 text-sm text-mute">用户 ID：{user.id}</p>
+                  <p className="text-3xl font-black text-white">{user.username}</p>
+                  <p className="font-mono text-sm text-white/42">@{user.handle}</p>
+                  <p className="mt-2 text-sm text-white/42">用户 ID：{user.id}</p>
                 </div>
               </div>
 
-              <div className="mt-6 rounded-lg border border-line bg-bone p-4">
-                <p className="font-mono text-xs uppercase tracking-[0.16em] text-mute">
+              <div className="mt-6 rounded-3xl border border-white/10 bg-white/[0.045] p-5">
+                <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#4BFF5E]">
                   GitHub account
                 </p>
-                <p className="mt-2 font-mono text-sm text-ink">
+                <p className="mt-2 font-mono text-sm text-white">
                   github.com/{user.githubAccount}
                 </p>
                 <span className="mt-3 inline-flex tag tag-green">已绑定</span>
@@ -64,7 +66,7 @@ export default function ProfilePage() {
           <div className="space-y-6">
             <Reveal delay={80}>
               <SpotlightCard className="p-6">
-                <h2 className="font-serif text-4xl tracking-[-0.04em] text-ink">
+                <h2 className="text-4xl font-black tracking-[-0.045em] text-white">
                   修改个人信息
                 </h2>
 
@@ -94,7 +96,7 @@ export default function ProfilePage() {
 
                 <button
                   type="button"
-                  className="mt-6 rounded-md bg-ink px-5 py-2 text-sm font-semibold text-white"
+                  className="dark-primary-btn mt-6 rounded-2xl px-5 py-3 text-sm"
                 >
                   保存修改
                 </button>
@@ -103,7 +105,7 @@ export default function ProfilePage() {
 
             <Reveal delay={140}>
               <SpotlightCard className="p-6">
-                <h2 className="font-serif text-4xl tracking-[-0.04em] text-ink">
+                <h2 className="text-4xl font-black tracking-[-0.045em] text-white">
                   我的项目
                 </h2>
 
@@ -111,14 +113,14 @@ export default function ProfilePage() {
                   {myProjects.map(project => (
                     <div
                       key={project.id}
-                      className="rounded-lg border border-line bg-bone p-5"
+                      className="rounded-3xl border border-white/10 bg-white/[0.045] p-5"
                     >
                       <div className="flex flex-wrap items-start justify-between gap-4">
                         <div>
-                          <p className="text-lg font-semibold text-ink">
+                          <p className="text-lg font-black text-white">
                             {project.name}
                           </p>
-                          <p className="mt-1 font-mono text-xs text-mute">
+                          <p className="mt-1 font-mono text-xs text-white/40">
                             {project.githubRepo}
                           </p>
                         </div>
@@ -128,7 +130,9 @@ export default function ProfilePage() {
                         </span>
                       </div>
 
-                      <p className="mt-4 leading-7 text-mute">{project.theme}</p>
+                      <p className="mt-4 leading-7 text-white/58">
+                        {project.theme}
+                      </p>
 
                       <div className="mt-4 grid gap-3 md:grid-cols-3">
                         <SmallStat value={project.star} label="平台 Star" />
@@ -149,9 +153,11 @@ export default function ProfilePage() {
 
 function SmallStat({ value, label }) {
   return (
-    <div className="rounded-lg border border-line bg-white p-3">
-      <p className="font-serif text-2xl tracking-[-0.04em] text-ink">{value}</p>
-      <p className="mt-1 text-xs text-mute">{label}</p>
+    <div className="rounded-3xl border border-white/10 bg-white/[0.045] p-4">
+      <p className="text-2xl font-black tracking-[-0.04em] text-white">
+        {value}
+      </p>
+      <p className="mt-1 text-xs text-white/38">{label}</p>
     </div>
   );
 }
@@ -159,12 +165,12 @@ function SmallStat({ value, label }) {
 function Input({ label, value, onChange, maxLength }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-sm text-mute">{label}</span>
+      <span className="mb-2 block text-sm text-white/50">{label}</span>
       <input
         value={value}
         maxLength={maxLength}
         onChange={event => onChange(event.target.value)}
-        className="w-full rounded-md border border-line bg-bone px-4 py-3 text-sm text-ink outline-none focus:border-ink"
+        className="dark-input"
       />
     </label>
   );
