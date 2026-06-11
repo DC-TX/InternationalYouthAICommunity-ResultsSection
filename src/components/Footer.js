@@ -2,12 +2,21 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-black px-6 py-10 text-center">
-      <p className="font-bold text-white">International Youth AI Community</p>
+    <footer className="border-t border-line bg-bone px-6 py-10">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4">
+        <div>
+          <p className="text-sm font-semibold text-ink">
+            International Youth AI Community
+          </p>
+          <p className="mt-1 text-xs text-mute">
+            Static demo focused on results, recruitment and GitHub integration.
+          </p>
+        </div>
 
-      <p className="mt-2 text-sm text-white/40">
-        Demo Version · 首页 / 项目招募 / 成果展示 / Agent 推荐框架
-      </p>
+        <p className="font-mono text-xs text-mute">
+          React · Tailwind · GitHub-ready frontend
+        </p>
+      </div>
     </footer>
   );
 }
