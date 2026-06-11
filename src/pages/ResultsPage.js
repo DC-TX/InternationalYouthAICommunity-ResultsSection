@@ -36,34 +36,36 @@ export default function ResultsPage() {
   }
 
   return (
-    <section className="min-h-screen px-6 pb-24 pt-36">
+    <section className="dark-page-section min-h-screen px-6 pb-24 pt-36">
       <div className="mx-auto max-w-7xl">
         <Reveal>
           <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-mute">
+              <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#4BFF5E]">
                 Results linked with GitHub repositories
               </p>
-              <h1 className="mt-4 font-serif text-6xl leading-none tracking-[-0.045em] text-ink">
+
+              <h1 className="mt-4 text-6xl font-black leading-none tracking-[-0.055em] text-white">
                 成果展示
               </h1>
-              <p className="mt-5 max-w-2xl leading-8 text-mute">
+
+              <p className="mt-5 max-w-2xl text-lg leading-8 text-white/58">
                 每个成果不只展示项目名，还展示 GitHub 仓库、README 摘要、仓库 Star、最后提交和同步状态。
               </p>
             </div>
 
-            <div className="rounded-lg border border-line bg-white p-4">
-              <p className="font-mono text-xs uppercase tracking-[0.16em] text-mute">
+            <div className="dark-page-panel rounded-3xl p-5">
+              <p className="font-mono text-xs uppercase tracking-[0.16em] text-white/35">
                 current mode
               </p>
-              <p className="mt-1 text-sm font-semibold text-ink">
-                静态 Demo，预留 GitHub API 接入
+              <p className="mt-2 text-sm font-bold text-white">
+                静态 Demo · 预留 GitHub API 接入
               </p>
             </div>
           </div>
         </Reveal>
 
-        <div className="mb-8 flex flex-wrap gap-2">
+        <div className="mb-8 flex flex-wrap gap-3">
           {[
             { key: "star", label: "平台 Star" },
             { key: "repo", label: "GitHub Star" },
@@ -74,10 +76,10 @@ export default function ResultsPage() {
               key={item.key}
               type="button"
               onClick={() => setSortMode(item.key)}
-              className={`rounded-md border px-4 py-2 text-sm transition ${
+              className={`rounded-2xl px-5 py-3 text-sm font-black transition ${
                 sortMode === item.key
-                  ? "border-ink bg-ink text-white"
-                  : "border-line bg-white text-mute hover:text-ink"
+                  ? "bg-[#4BFF5E] text-[#07100A] shadow-[0_0_38px_rgba(75,255,94,0.28)]"
+                  : "border border-white/10 bg-white/[0.055] text-white/55 hover:bg-white/10 hover:text-white"
               }`}
             >
               {item.label}
@@ -91,16 +93,17 @@ export default function ResultsPage() {
               <SpotlightCard className="h-full p-6">
                 <ProjectHeader project={project} />
 
-                <div className="mt-6 rounded-lg border border-line bg-bone p-4">
+                <div className="mt-6 rounded-3xl border border-white/10 bg-white/[0.04] p-5">
                   <div className="mb-3 flex items-center justify-between gap-3">
-                    <p className="font-mono text-xs uppercase tracking-[0.16em] text-mute">
+                    <p className="font-mono text-xs uppercase tracking-[0.16em] text-white/35">
                       README 摘要
                     </p>
-                    <span className="text-xs text-mute">
+                    <span className="text-xs text-white/35">
                       synced {project.readmeSyncedAt}
                     </span>
                   </div>
-                  <p className="line-clamp-3 text-sm leading-7 text-charcoal">
+
+                  <p className="text-sm leading-7 text-white/68">
                     {project.readme}
                   </p>
                 </div>
@@ -130,7 +133,7 @@ export default function ResultsPage() {
                   <button
                     type="button"
                     onClick={() => setSelectedProject(project)}
-                    className="rounded-md bg-ink px-4 py-2 text-sm font-semibold text-white active:scale-[0.98]"
+                    className="dark-primary-btn rounded-2xl px-5 py-3 text-sm"
                   >
                     查看详情
                   </button>
@@ -139,7 +142,7 @@ export default function ResultsPage() {
                     <button
                       type="button"
                       onClick={() => setDemoProject(project)}
-                      className="rounded-md border border-line bg-white px-4 py-2 text-sm text-ink hover:bg-bone"
+                      className="dark-secondary-btn rounded-2xl px-5 py-3 text-sm font-bold"
                     >
                       Demo 预览
                     </button>
@@ -150,12 +153,12 @@ export default function ResultsPage() {
                       href={project.githubUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="rounded-md border border-line bg-white px-4 py-2 text-sm text-ink hover:bg-bone"
+                      className="dark-secondary-btn rounded-2xl px-5 py-3 text-sm font-bold"
                     >
                       打开 GitHub
                     </a>
                   ) : (
-                    <span className="rounded-md border border-line bg-bone px-4 py-2 text-sm text-mute">
+                    <span className="rounded-2xl border border-white/10 bg-white/[0.035] px-5 py-3 text-sm text-white/30">
                       未绑定仓库
                     </span>
                   )}
@@ -163,10 +166,10 @@ export default function ResultsPage() {
                   <button
                     type="button"
                     onClick={() => toggleStar(project.id)}
-                    className={`rounded-md border px-4 py-2 text-sm ${
+                    className={`rounded-2xl px-5 py-3 text-sm font-black transition ${
                       project.starred
-                        ? "border-ink bg-ink text-white"
-                        : "border-line bg-white text-ink hover:bg-bone"
+                        ? "bg-[#4BFF5E] text-[#07100A]"
+                        : "border border-white/10 bg-white/[0.055] text-white/65 hover:bg-white/10 hover:text-white"
                     }`}
                   >
                     {project.starred ? "已 Star" : "Star"}
@@ -193,10 +196,13 @@ export default function ResultsPage() {
       >
         {demoProject && (
           <div>
-            <p className="mb-3 font-mono text-xs uppercase tracking-[0.16em] text-mute">
+            <p className="mb-3 font-mono text-xs uppercase tracking-[0.16em] text-white/35">
               HTML preview
             </p>
-            <div dangerouslySetInnerHTML={{ __html: demoProject.demoHtml }} />
+            <div
+              className="rounded-3xl border border-white/10 bg-white/[0.04] p-5"
+              dangerouslySetInnerHTML={{ __html: demoProject.demoHtml }}
+            />
           </div>
         )}
       </Modal>
@@ -214,34 +220,34 @@ function ProjectHeader({ project }) {
             <span className="tag tag-blue">{project.repoHealth}</span>
           </div>
 
-          <h2 className="font-serif text-4xl leading-tight tracking-[-0.04em] text-ink">
+          <h2 className="text-4xl font-black leading-tight tracking-[-0.045em] text-white">
             {project.name}
           </h2>
 
-          <p className="mt-3 leading-7 text-mute">{project.theme}</p>
+          <p className="mt-3 leading-7 text-white/55">{project.theme}</p>
         </div>
 
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-github text-sm font-bold text-white">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white text-sm font-black text-[#07100A]">
           {project.avatar}
         </div>
       </div>
 
-      <div className="mt-5 rounded-lg border border-line bg-white p-4">
+      <div className="mt-5 rounded-3xl border border-white/10 bg-white/[0.04] p-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.16em] text-mute">
+            <p className="font-mono text-xs uppercase tracking-[0.16em] text-white/35">
               GitHub repository
             </p>
-            <p className="mt-1 font-mono text-sm text-ink">
+            <p className="mt-2 font-mono text-sm text-white">
               {project.githubRepo}
             </p>
           </div>
 
-          <div className="text-right">
-            <p className="font-mono text-xs uppercase tracking-[0.16em] text-mute">
+          <div className="text-left md:text-right">
+            <p className="font-mono text-xs uppercase tracking-[0.16em] text-white/35">
               last commit
             </p>
-            <p className="mt-1 text-sm text-charcoal">{project.lastCommit}</p>
+            <p className="mt-2 text-sm text-white/65">{project.lastCommit}</p>
           </div>
         </div>
       </div>
@@ -251,9 +257,11 @@ function ProjectHeader({ project }) {
 
 function MiniMetric({ label, value }) {
   return (
-    <div className="rounded-lg border border-line bg-white p-3">
-      <p className="font-serif text-2xl tracking-[-0.04em] text-ink">{value}</p>
-      <p className="mt-1 text-xs text-mute">{label}</p>
+    <div className="rounded-3xl border border-white/10 bg-white/[0.045] p-4">
+      <p className="text-3xl font-black tracking-[-0.04em] text-white">
+        {value}
+      </p>
+      <p className="mt-1 text-xs text-white/38">{label}</p>
     </div>
   );
 }
@@ -267,18 +275,19 @@ function ProjectDetail({ project }) {
         <MiniMetric label="报名人数" value={project.applicants} />
       </div>
 
-      <div className="rounded-lg border border-line bg-bone p-5">
-        <p className="font-mono text-xs uppercase tracking-[0.16em] text-mute">
+      <div className="rounded-3xl border border-white/10 bg-white/[0.045] p-5">
+        <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#4BFF5E]">
           README from GitHub
         </p>
-        <p className="mt-4 leading-8 text-charcoal">{project.readme}</p>
+        <p className="mt-4 leading-8 text-white/70">{project.readme}</p>
       </div>
 
-      <div className="mt-5 rounded-lg border border-line bg-white p-5">
-        <p className="font-mono text-xs uppercase tracking-[0.16em] text-mute">
+      <div className="mt-5 rounded-3xl border border-white/10 bg-white/[0.045] p-5">
+        <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#4BFF5E]">
           repository status
         </p>
-        <div className="mt-4 space-y-2 text-sm text-charcoal">
+
+        <div className="mt-4 space-y-2 text-sm text-white/65">
           <p>仓库：{project.githubRepo}</p>
           <p>分支：{project.githubBranch}</p>
           <p>同步：{project.readmeSyncedAt}</p>
