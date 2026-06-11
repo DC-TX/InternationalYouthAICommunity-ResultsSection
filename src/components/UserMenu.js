@@ -23,9 +23,9 @@ export default function UserMenu({ setCurrentPage }) {
     >
       <button
         type="button"
-        className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-2.5 py-2 transition hover:bg-white/10"
+        className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.06] px-3 py-2 transition hover:bg-white/[0.1]"
       >
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white text-xs font-black text-[#070A12]">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-xs font-black text-[#050713]">
           李
         </div>
 
@@ -37,7 +37,7 @@ export default function UserMenu({ setCurrentPage }) {
 
       {open && (
         <div className="absolute right-0 top-full pt-3">
-          <div className="w-52 rounded-2xl border border-white/10 bg-[#0B1020]/95 p-2 shadow-soft backdrop-blur-xl">
+          <div className="w-52 rounded-2xl border border-white/10 bg-[#080D1D]/95 p-2 shadow-[0_24px_90px_rgba(0,0,0,0.42)] backdrop-blur-xl">
             <button
               type="button"
               onClick={goProfile}
