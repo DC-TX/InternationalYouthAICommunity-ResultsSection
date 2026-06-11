@@ -4,14 +4,40 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        iyaiGreen: "#4BFF5E",
-        iyaiPurple: "#BF97D2",
-        iyaiDark: "#1F1E40",
-        iyaiBlack: "#070711"
+        paper: "#F7F6F3",
+        bone: "#FBFBFA",
+        ink: "#151515",
+        charcoal: "#2F3437",
+        mute: "#787774",
+        line: "#EAEAEA",
+        card: "#FFFFFF",
+        paleBlue: "#E1F3FE",
+        paleGreen: "#EDF3EC",
+        paleYellow: "#FBF3DB",
+        paleRed: "#FDEBEC",
+        palePurple: "#EEEAF7",
+        github: "#24292F"
       },
       boxShadow: {
-        glowGreen: "0 0 28px rgba(75, 255, 94, 0.42)",
-        glowPurple: "0 0 28px rgba(191, 151, 210, 0.42)"
+        soft: "0 2px 8px rgba(0,0,0,0.04)"
+      },
+      fontFamily: {
+        sans: [
+          "SF Pro Display",
+          "Geist Sans",
+          "Helvetica Neue",
+          "Switzer",
+          "Arial",
+          "sans-serif"
+        ],
+        serif: [
+          "Newsreader",
+          "Instrument Serif",
+          "Playfair Display",
+          "Georgia",
+          "serif"
+        ],
+        mono: ["Geist Mono", "SF Mono", "JetBrains Mono", "monospace"]
       }
     }
   },
