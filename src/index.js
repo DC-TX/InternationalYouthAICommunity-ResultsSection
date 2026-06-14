@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
+import "./staticQuality.css";
 import App from "./App";
 
 // React 入口文件
