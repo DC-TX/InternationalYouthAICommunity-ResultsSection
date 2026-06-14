@@ -1,0 +1,85 @@
+/* Static quality gate responsive fixes */
+.dark-primary-btn:disabled,
+.dark-secondary-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  transform: none;
+  box-shadow: none;
+}
+
+.dark-primary-btn:disabled:hover,
+.dark-secondary-btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+@media (max-width: 767px) {
+  header.fixed {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 0.75rem;
+  }
+
+  header.fixed nav {
+    align-items: flex-start;
+    gap: 0.75rem;
+    border-radius: 1.25rem;
+    padding: 0.75rem;
+  }
+
+  .dock-nav {
+    order: 3;
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.35rem;
+    border-radius: 1rem;
+    padding: 0.35rem;
+  }
+
+  .dock-item {
+    min-width: 0;
+    padding: 0.55rem 0.35rem;
+  }
+
+  .dock-item:hover,
+  .dock-item:hover + .dock-item,
+  .dock-item:has(+ .dock-item:hover) {
+    transform: none;
+  }
+
+  .dock-label {
+    font-size: 0.68rem;
+    line-height: 1.15;
+  }
+
+  .home-stage h1,
+  .dark-page-section h1 {
+    font-size: 3rem;
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  .home-stage h2,
+  .dark-page-section h2,
+  .dark-page-section h3 {
+    font-size: 2rem;
+    line-height: 1.08;
+    letter-spacing: 0;
+  }
+
+  .home-primary-btn,
+  .home-secondary-btn,
+  .dark-primary-btn,
+  .dark-secondary-btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .modal-scroll {
+    max-height: 82vh;
+    border-radius: 1.25rem;
+    padding: 1rem;
+  }
+}
