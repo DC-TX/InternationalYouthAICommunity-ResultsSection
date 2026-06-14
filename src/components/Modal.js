@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function Modal({
   open,
@@ -7,6 +7,22 @@ export default function Modal({
   onClose,
   width = "max-w-2xl"
 }) {
+  useEffect(() => {
+    if (!open) return undefined;
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open, onClose]);
+
   if (!open) return null;
 
   return (
@@ -15,11 +31,17 @@ export default function Modal({
       onClick={onClose}
     >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
         className={`modal-scroll w-full ${width} rounded-[1.75rem] border border-white/10 bg-[#080D1D]/95 p-6 shadow-[0_30px_120px_rgba(0,0,0,0.55)]`}
         onClick={event => event.stopPropagation()}
       >
         <div className="mb-5 flex items-start justify-between gap-4 border-b border-white/10 pb-4">
-          <h3 className="text-3xl font-black leading-tight tracking-[-0.04em] text-white">
+          <h3
+            id="modal-title"
+            className="text-3xl font-black leading-tight tracking-[-0.04em] text-white"
+          >
             {title}
           </h3>
 
