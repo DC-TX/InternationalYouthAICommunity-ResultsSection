@@ -5,10 +5,12 @@ import { demoProjects, demoUser } from "../data/projects";
 
 export default function ProfilePage() {
   const [user, setUser] = useState(demoUser);
+  const [saveMessage, setSaveMessage] = useState("");
   const myProjects = demoProjects.filter(project => project.isMine);
 
   function updateUser(field, value) {
     setUser(prev => ({ ...prev, [field]: value }));
+    setSaveMessage("");
   }
 
   return (
@@ -70,6 +72,12 @@ export default function ProfilePage() {
                   修改个人信息
                 </h2>
 
+                {saveMessage && (
+                  <div className="mt-5 rounded-2xl border border-[#4BFF5E]/20 bg-[#4BFF5E]/10 px-4 py-3 text-sm font-bold text-[#A4FFAD]">
+                    {saveMessage}
+                  </div>
+                )}
+
                 <div className="mt-6 grid gap-4 md:grid-cols-2">
                   <Input
                     label="头像文字"
@@ -96,6 +104,9 @@ export default function ProfilePage() {
 
                 <button
                   type="button"
+                  onClick={() =>
+                    setSaveMessage("静态 Demo 已更新页面状态。Firebase 阶段会保存到数据库。")
+                  }
                   className="dark-primary-btn mt-6 rounded-2xl px-5 py-3 text-sm"
                 >
                   保存修改
