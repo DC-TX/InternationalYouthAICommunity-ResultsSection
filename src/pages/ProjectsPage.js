@@ -9,6 +9,7 @@ export default function ProjectsPage() {
   const [applyProject, setApplyProject] = useState(null);
   const [showNewProject, setShowNewProject] = useState(false);
   const [showApplicants, setShowApplicants] = useState(false);
+  const [applicantActionMessage, setApplicantActionMessage] = useState("");
 
   const myProjects = demoProjects.filter(project => project.isMine);
 
@@ -121,9 +122,11 @@ export default function ProjectsPage() {
 
                   <button
                     type="button"
+                    disabled
+                    title="Firebase 阶段接入真实编辑"
                     className="dark-secondary-btn rounded-2xl px-5 py-3 text-sm font-bold"
                   >
-                    编辑项目
+                    编辑项目（待接入）
                   </button>
                 </div>
               </SpotlightCard>
@@ -154,6 +157,12 @@ export default function ProjectsPage() {
         onClose={() => setShowApplicants(false)}
       >
         <div className="space-y-3">
+          {applicantActionMessage && (
+            <div className="rounded-2xl border border-[#4BFF5E]/20 bg-[#4BFF5E]/10 px-4 py-3 text-sm font-bold text-[#A4FFAD]">
+              {applicantActionMessage}
+            </div>
+          )}
+
           {demoApplicants.map(applicant => (
             <div
               key={applicant.id}
@@ -174,7 +183,15 @@ export default function ProjectsPage() {
 
                 <span className="tag tag-yellow">{applicant.remain}</span>
 
-                <button className="dark-primary-btn rounded-2xl px-4 py-2 text-sm">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setApplicantActionMessage(
+                      `静态 Demo 已标记通过：${applicant.name}。Firebase 阶段会保存审核状态。`
+                    )
+                  }
+                  className="dark-primary-btn rounded-2xl px-4 py-2 text-sm"
+                >
                   通过
                 </button>
               </div>
@@ -264,19 +281,105 @@ function Stat({ value, label }) {
 }
 
 function ProjectForm({ onClose }) {
+  const [form, setForm] = useState({
+    name: "",
+    theme: "",
+    stage: "早期",
+    githubUrl: "",
+    tags: "",
+    description: "",
+    demoHtml: ""
+  });
+  const [errors, setErrors] = useState({});
+  const [status, setStatus] = useState("");
+
+  function updateField(field, value) {
+    setForm(prev => ({ ...prev, [field]: value }));
+    setErrors(prev => ({ ...prev, [field]: "" }));
+    setStatus("");
+  }
+
+  function handleSubmit() {
+    const nextErrors = {};
+
+    if (!form.name.trim()) nextErrors.name = "请输入项目名称。";
+    if (!form.theme.trim()) nextErrors.theme = "请输入项目主题。";
+    if (!form.githubUrl.trim()) {
+      nextErrors.githubUrl = "请输入 GitHub 仓库链接。";
+    } else if (!/^https:\/\/github\.com\/[^/]+\/[^/]+/.test(form.githubUrl.trim())) {
+      nextErrors.githubUrl = "请输入有效的 GitHub 仓库链接。";
+    }
+    if (!form.tags.trim()) nextErrors.tags = "请输入至少一个项目标签。";
+    if (!form.description.trim()) nextErrors.description = "请输入项目介绍。";
+
+    setErrors(nextErrors);
+
+    if (Object.keys(nextErrors).length > 0) {
+      setStatus("请先补全必填信息。");
+      return;
+    }
+
+    setStatus("静态 Demo 已通过发布校验。Firebase 阶段会保存到数据库。");
+  }
+
   return (
     <div className="space-y-4">
-      <Input label="项目名称" placeholder="输入项目名称" />
-      <Input label="项目主题" placeholder="例如：具身智能、计算机视觉、RAG" />
+      {status && (
+        <div className="rounded-2xl border border-[#4BFF5E]/20 bg-[#4BFF5E]/10 px-4 py-3 text-sm font-bold text-[#A4FFAD]">
+          {status}
+        </div>
+      )}
+
+      <Input
+        label="项目名称"
+        placeholder="输入项目名称"
+        value={form.name}
+        error={errors.name}
+        onChange={value => updateField("name", value)}
+      />
+      <Input
+        label="项目主题"
+        placeholder="例如：具身智能、计算机视觉、RAG"
+        value={form.theme}
+        error={errors.theme}
+        onChange={value => updateField("theme", value)}
+      />
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Select label="项目阶段" />
-        <Input label="GitHub 仓库" placeholder="https://github.com/user/repo" />
+        <Select
+          label="项目阶段"
+          value={form.stage}
+          onChange={value => updateField("stage", value)}
+        />
+        <Input
+          label="GitHub 仓库"
+          placeholder="https://github.com/user/repo"
+          value={form.githubUrl}
+          error={errors.githubUrl}
+          onChange={value => updateField("githubUrl", value)}
+        />
       </div>
 
-      <Input label="项目标签" placeholder="计算机视觉, 机器人, PyTorch" />
-      <Textarea label="项目介绍" placeholder="描述目标、技术路线、需要什么合作者" />
-      <Textarea label="Demo HTML" placeholder="静态 Demo 阶段可粘贴 HTML 预览代码" />
+      <Input
+        label="项目标签"
+        placeholder="计算机视觉, 机器人, PyTorch"
+        value={form.tags}
+        error={errors.tags}
+        onChange={value => updateField("tags", value)}
+      />
+      <Textarea
+        label="项目介绍"
+        placeholder="描述目标、技术路线、需要什么合作者"
+        value={form.description}
+        error={errors.description}
+        onChange={value => updateField("description", value)}
+      />
+      <Textarea
+        label="Demo HTML"
+        placeholder="静态 Demo 阶段仅作为代码预览展示"
+        value={form.demoHtml}
+        onChange={value => updateField("demoHtml", value)}
+      />
 
       <div className="flex justify-end gap-3 pt-2">
         <button
@@ -288,7 +391,7 @@ function ProjectForm({ onClose }) {
         </button>
         <button
           type="button"
-          onClick={onClose}
+          onClick={handleSubmit}
           className="dark-primary-btn rounded-2xl px-5 py-3 text-sm"
         >
           发布招募
@@ -299,8 +402,45 @@ function ProjectForm({ onClose }) {
 }
 
 function ApplyForm({ project, onClose }) {
+  const [form, setForm] = useState({
+    intro: "",
+    contribution: "",
+    github: ""
+  });
+  const [errors, setErrors] = useState({});
+  const [status, setStatus] = useState("");
+
+  function updateField(field, value) {
+    setForm(prev => ({ ...prev, [field]: value }));
+    setErrors(prev => ({ ...prev, [field]: "" }));
+    setStatus("");
+  }
+
+  function handleSubmit() {
+    const nextErrors = {};
+
+    if (!form.intro.trim()) nextErrors.intro = "请输入自我介绍。";
+    if (!form.contribution.trim()) nextErrors.contribution = "请输入贡献方向。";
+    if (!form.github.trim()) nextErrors.github = "请输入 GitHub 账号。";
+
+    setErrors(nextErrors);
+
+    if (Object.keys(nextErrors).length > 0) {
+      setStatus("请先补全报名信息。");
+      return;
+    }
+
+    setStatus("静态 Demo 已通过报名校验。Firebase 阶段会保存报名信息。");
+  }
+
   return (
     <div className="space-y-4">
+      {status && (
+        <div className="rounded-2xl border border-[#4BFF5E]/20 bg-[#4BFF5E]/10 px-4 py-3 text-sm font-bold text-[#A4FFAD]">
+          {status}
+        </div>
+      )}
+
       <div className="rounded-3xl border border-white/10 bg-white/[0.045] p-5 text-sm leading-7 text-white/60">
         你的申请会进入仅项目发起者可见的报名表，最多保留 7 × 24 小时。当前申请将关联你的 GitHub 账号。
       </div>
@@ -317,9 +457,27 @@ function ApplyForm({ project, onClose }) {
         </div>
       )}
 
-      <Textarea label="自我介绍" placeholder="简要介绍技能和项目经历" />
-      <Textarea label="贡献方向" placeholder="描述你希望负责的模块" />
-      <Input label="GitHub 账号" placeholder="your-github-handle" />
+      <Textarea
+        label="自我介绍"
+        placeholder="简要介绍技能和项目经历"
+        value={form.intro}
+        error={errors.intro}
+        onChange={value => updateField("intro", value)}
+      />
+      <Textarea
+        label="贡献方向"
+        placeholder="描述你希望负责的模块"
+        value={form.contribution}
+        error={errors.contribution}
+        onChange={value => updateField("contribution", value)}
+      />
+      <Input
+        label="GitHub 账号"
+        placeholder="your-github-handle"
+        value={form.github}
+        error={errors.github}
+        onChange={value => updateField("github", value)}
+      />
 
       <div className="flex justify-end gap-3 pt-2">
         <button
@@ -331,7 +489,7 @@ function ApplyForm({ project, onClose }) {
         </button>
         <button
           type="button"
-          onClick={onClose}
+          onClick={handleSubmit}
           className="dark-primary-btn rounded-2xl px-5 py-3 text-sm"
         >
           提交报名
@@ -341,20 +499,30 @@ function ApplyForm({ project, onClose }) {
   );
 }
 
-function Input({ label, placeholder }) {
+function Input({ label, placeholder, value = "", onChange, error }) {
   return (
     <label className="block">
       <span className="mb-2 block text-sm text-white/50">{label}</span>
-      <input placeholder={placeholder} className="dark-input" />
+      <input
+        value={value}
+        placeholder={placeholder}
+        onChange={event => onChange?.(event.target.value)}
+        className="dark-input"
+      />
+      {error && <span className="mt-2 block text-xs text-red-300">{error}</span>}
     </label>
   );
 }
 
-function Select({ label }) {
+function Select({ label, value, onChange }) {
   return (
     <label className="block">
       <span className="mb-2 block text-sm text-white/50">{label}</span>
-      <select className="dark-input">
+      <select
+        value={value}
+        onChange={event => onChange?.(event.target.value)}
+        className="dark-input"
+      >
         <option>早期</option>
         <option>中期</option>
         <option>后期</option>
@@ -364,11 +532,18 @@ function Select({ label }) {
   );
 }
 
-function Textarea({ label, placeholder }) {
+function Textarea({ label, placeholder, value = "", onChange, error }) {
   return (
     <label className="block">
       <span className="mb-2 block text-sm text-white/50">{label}</span>
-      <textarea rows={4} placeholder={placeholder} className="dark-input resize-y" />
+      <textarea
+        rows={4}
+        value={value}
+        placeholder={placeholder}
+        onChange={event => onChange?.(event.target.value)}
+        className="dark-input resize-y"
+      />
+      {error && <span className="mt-2 block text-xs text-red-300">{error}</span>}
     </label>
   );
 }
