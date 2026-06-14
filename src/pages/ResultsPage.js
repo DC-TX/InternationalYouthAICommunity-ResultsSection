@@ -197,12 +197,11 @@ export default function ResultsPage() {
         {demoProject && (
           <div>
             <p className="mb-3 font-mono text-xs uppercase tracking-[0.16em] text-white/35">
-              HTML preview
+              HTML preview code
             </p>
-            <div
-              className="rounded-3xl border border-white/10 bg-white/[0.04] p-5"
-              dangerouslySetInnerHTML={{ __html: demoProject.demoHtml }}
-            />
+            <pre className="max-h-[420px] overflow-auto whitespace-pre-wrap break-words rounded-3xl border border-white/10 bg-black/35 p-5 font-mono text-sm leading-7 text-white/70">
+              {demoProject.demoHtml}
+            </pre>
           </div>
         )}
       </Modal>
