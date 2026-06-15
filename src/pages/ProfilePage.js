@@ -2,20 +2,67 @@ import React, { useState } from "react";
 import Reveal from "../components/ui/Reveal";
 import SpotlightCard from "../components/ui/SpotlightCard";
 import { demoProjects, demoUser } from "../data/projects";
+import { useAuth } from "../context/AuthContext";
+import useProjects from "../hooks/useProjects";
 
 export default function ProfilePage() {
-  const [user, setUser] = useState(demoUser);
+  const {
+    user: authUser,
+    profile,
+    firebaseConfigured,
+    signInWithGitHub,
+    updateProfileFields
+  } = useAuth();
+  const { projects } = useProjects();
+  const [draftUser, setDraftUser] = useState(null);
   const [saveMessage, setSaveMessage] = useState("");
-  const myProjects = demoProjects.filter(project => project.isMine);
+  const user = draftUser || profile || demoUser;
+  const myProjects = firebaseConfigured && authUser
+    ? projects.filter(project => project.ownerId === authUser.uid)
+    : demoProjects.filter(project => project.isMine);
 
   function updateUser(field, value) {
-    setUser(prev => ({ ...prev, [field]: value }));
+    setDraftUser(prev => ({ ...(prev || user), [field]: value }));
     setSaveMessage("");
+  }
+
+  async function saveProfile() {
+    if (firebaseConfigured) {
+      if (!authUser) {
+        setSaveMessage("请先使用 GitHub 登录后再保存个人信息。");
+        return;
+      }
+
+      await updateProfileFields({
+        avatar: user.avatar,
+        username: user.username,
+        handle: user.handle,
+        githubAccount: user.githubAccount
+      });
+      setDraftUser(null);
+      setSaveMessage("个人信息已保存到 Firebase。");
+      return;
+    }
+
+    setSaveMessage("静态 Demo 已更新页面状态。Firebase 阶段会保存到数据库。");
   }
 
   return (
     <section className="dark-page-section min-h-screen px-6 pb-24 pt-36">
       <div className="mx-auto max-w-7xl">
+        {firebaseConfigured && !authUser && (
+          <div className="mb-6 rounded-3xl border border-[#4BFF5E]/20 bg-[#4BFF5E]/10 p-5 text-white">
+            <p className="font-bold">请先使用 GitHub 登录查看和保存个人主页。</p>
+            <button
+              type="button"
+              onClick={signInWithGitHub}
+              className="dark-primary-btn mt-4 rounded-2xl px-5 py-3 text-sm"
+            >
+              GitHub 登录
+            </button>
+          </div>
+        )}
+
         <Reveal>
           <div className="mb-10">
             <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#4BFF5E]">
@@ -104,9 +151,7 @@ export default function ProfilePage() {
 
                 <button
                   type="button"
-                  onClick={() =>
-                    setSaveMessage("静态 Demo 已更新页面状态。Firebase 阶段会保存到数据库。")
-                  }
+                  onClick={saveProfile}
                   className="dark-primary-btn mt-6 rounded-2xl px-5 py-3 text-sm"
                 >
                   保存修改

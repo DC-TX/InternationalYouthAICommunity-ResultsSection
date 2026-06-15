@@ -1,14 +1,19 @@
 import React from "react";
-import { demoProjects, demoUser } from "../data/projects";
+import { demoUser } from "../data/projects";
 import BlurText from "../components/homeEffects/BlurText";
 import FloatingLines from "../components/homeEffects/FloatingLines";
 import GradualBlur from "../components/homeEffects/GradualBlur";
 import ClickSpark from "../components/homeEffects/ClickSpark";
 import CrosshairCursor from "../components/homeEffects/CrosshairCursor";
 import PremiumHomeCard from "../components/homeEffects/PremiumHomeCard";
+import { useAuth } from "../context/AuthContext";
+import useProjects from "../hooks/useProjects";
 
 export default function HomePage({ setCurrentPage }) {
-  const topProjects = [...demoProjects]
+  const { profile } = useAuth();
+  const { projects } = useProjects();
+  const dashboardUser = profile || demoUser;
+  const topProjects = [...projects]
     .sort((a, b) => b.repoStars - a.repoStars)
     .slice(0, 3);
 
@@ -66,9 +71,9 @@ export default function HomePage({ setCurrentPage }) {
               </div>
 
               <div className="mt-12 grid max-w-2xl grid-cols-3 gap-3">
-                <HomeMetric value={demoUser.projectsCount} label="我的项目" />
-                <HomeMetric value={demoUser.totalStars} label="收到 Star" />
-                <HomeMetric value={demoUser.repositoriesSynced} label="同步仓库" />
+                <HomeMetric value={dashboardUser.projectsCount || 0} label="我的项目" />
+                <HomeMetric value={dashboardUser.totalStars || 0} label="收到 Star" />
+                <HomeMetric value={dashboardUser.repositoriesSynced || 0} label="同步仓库" />
               </div>
             </div>
 

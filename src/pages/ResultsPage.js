@@ -2,16 +2,33 @@ import React, { useMemo, useState } from "react";
 import Modal from "../components/Modal";
 import Reveal from "../components/ui/Reveal";
 import SpotlightCard from "../components/ui/SpotlightCard";
-import { demoProjects } from "../data/projects";
+import { useAuth } from "../context/AuthContext";
+import useProjects from "../hooks/useProjects";
+import useUserStars from "../hooks/useUserStars";
+import { toggleProjectStar } from "../services/projectsService";
 
 export default function ResultsPage() {
   const [sortMode, setSortMode] = useState("star");
-  const [projects, setProjects] = useState(demoProjects);
+  const { projects, error } = useProjects();
+  const { user, firebaseConfigured } = useAuth();
+  const { starredProjectIds } = useUserStars();
+  const [localStarredProjectIds, setLocalStarredProjectIds] = useState(new Set());
+  const [localStarDelta, setLocalStarDelta] = useState({});
   const [selectedProject, setSelectedProject] = useState(null);
   const [demoProject, setDemoProject] = useState(null);
 
   const sortedProjects = useMemo(() => {
-    const list = [...projects];
+    const list = projects.map(project => {
+      const isStarred = firebaseConfigured
+        ? starredProjectIds.has(project.id)
+        : localStarredProjectIds.has(project.id);
+
+      return {
+        ...project,
+        starred: isStarred,
+        star: project.star + (localStarDelta[project.id] || 0)
+      };
+    });
 
     if (sortMode === "star") list.sort((a, b) => b.star - a.star);
     if (sortMode === "repo") list.sort((a, b) => b.repoStars - a.repoStars);
@@ -19,20 +36,40 @@ export default function ResultsPage() {
     if (sortMode === "new") list.sort((a, b) => b.id - a.id);
 
     return list;
-  }, [projects, sortMode]);
+  }, [firebaseConfigured, localStarDelta, localStarredProjectIds, projects, sortMode, starredProjectIds]);
 
-  function toggleStar(projectId) {
-    setProjects(prev =>
-      prev.map(project =>
-        project.id === projectId
-          ? {
-              ...project,
-              starred: !project.starred,
-              star: project.starred ? project.star - 1 : project.star + 1
-            }
-          : project
-      )
-    );
+  async function handleToggleStar(project) {
+    if (firebaseConfigured) {
+      if (!user) {
+        alert("请先使用 GitHub 登录后再 Star 项目。");
+        return;
+      }
+
+      await toggleProjectStar({
+        projectId: project.id,
+        userId: user.uid,
+        isStarred: starredProjectIds.has(project.id)
+      });
+      return;
+    }
+
+    setLocalStarredProjectIds(prev => {
+      const next = new Set(prev);
+      const alreadyStarred = next.has(project.id);
+
+      if (alreadyStarred) {
+        next.delete(project.id);
+      } else {
+        next.add(project.id);
+      }
+
+      setLocalStarDelta(current => ({
+        ...current,
+        [project.id]: (current[project.id] || 0) + (alreadyStarred ? -1 : 1)
+      }));
+
+      return next;
+    });
   }
 
   return (
@@ -66,6 +103,12 @@ export default function ResultsPage() {
         </Reveal>
 
         <div className="mb-8 flex flex-wrap gap-3">
+          {error && (
+            <div className="w-full rounded-2xl border border-red-400/20 bg-red-500/10 px-4 py-3 text-sm font-bold text-red-200">
+              {error}
+            </div>
+          )}
+
           {[
             { key: "star", label: "平台 Star" },
             { key: "repo", label: "GitHub Star" },
@@ -165,7 +208,7 @@ export default function ResultsPage() {
 
                   <button
                     type="button"
-                    onClick={() => toggleStar(project.id)}
+                    onClick={() => handleToggleStar(project)}
                     className={`rounded-2xl px-5 py-3 text-sm font-black transition ${
                       project.starred
                         ? "bg-[#4BFF5E] text-[#07100A]"

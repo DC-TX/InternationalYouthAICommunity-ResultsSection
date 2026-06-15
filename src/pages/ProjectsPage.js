@@ -1,8 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "../components/Modal";
 import Reveal from "../components/ui/Reveal";
 import SpotlightCard from "../components/ui/SpotlightCard";
-import { demoApplicants, demoProjects } from "../data/projects";
+import { demoApplicants } from "../data/projects";
+import { useAuth } from "../context/AuthContext";
+import useProjects from "../hooks/useProjects";
+import {
+  createApplication,
+  createProject,
+  setApplicationStatus,
+  subscribeOwnerApplications
+} from "../services/projectsService";
 
 export default function ProjectsPage() {
   const [tab, setTab] = useState("browse");
@@ -10,8 +18,58 @@ export default function ProjectsPage() {
   const [showNewProject, setShowNewProject] = useState(false);
   const [showApplicants, setShowApplicants] = useState(false);
   const [applicantActionMessage, setApplicantActionMessage] = useState("");
+  const [applications, setApplications] = useState([]);
+  const { projects, error } = useProjects();
+  const { user, profile, firebaseConfigured } = useAuth();
 
-  const myProjects = demoProjects.filter(project => project.isMine);
+  const myProjects = projects.filter(project =>
+    firebaseConfigured && user ? project.ownerId === user.uid : project.isMine
+  );
+
+  useEffect(() => {
+    if (!firebaseConfigured || !user) {
+      setApplications([]);
+      return undefined;
+    }
+
+    return subscribeOwnerApplications(
+      user.uid,
+      setApplications,
+      issue => setApplicantActionMessage(issue.message || "报名表加载失败")
+    );
+  }, [firebaseConfigured, user]);
+
+  function openNewProject() {
+    if (firebaseConfigured && !user) {
+      alert("请先使用 GitHub 登录后再发布项目招募。");
+      return;
+    }
+
+    setShowNewProject(true);
+  }
+
+  function openApply(project) {
+    if (firebaseConfigured && !user) {
+      alert("请先使用 GitHub 登录后再提交报名。");
+      return;
+    }
+
+    setApplyProject(project);
+  }
+
+  async function approveApplication(application) {
+    if (firebaseConfigured) {
+      await setApplicationStatus(application.id, "approved");
+      setApplicantActionMessage(`已通过 ${application.applicantName || application.name} 的报名。`);
+      return;
+    }
+
+    setApplicantActionMessage(
+      `静态 Demo 已标记通过：${application.name}。Firebase 阶段会保存审核状态。`
+    );
+  }
+
+  const visibleApplications = firebaseConfigured ? applications : demoApplicants;
 
   return (
     <section className="dark-page-section min-h-screen px-6 pb-24 pt-36">
@@ -34,7 +92,7 @@ export default function ProjectsPage() {
 
             <button
               type="button"
-              onClick={() => setShowNewProject(true)}
+              onClick={openNewProject}
               className="dark-primary-btn rounded-2xl px-6 py-4 text-sm"
             >
               发起招募
@@ -70,12 +128,19 @@ export default function ProjectsPage() {
 
         {tab === "browse" && (
           <div className="grid gap-6 lg:grid-cols-2">
-            {demoProjects.map((project, index) => (
+            {error && (
+              <div className="rounded-2xl border border-red-400/20 bg-red-500/10 px-4 py-3 text-sm font-bold text-red-200 lg:col-span-2">
+                {error}
+              </div>
+            )}
+
+            {projects.map((project, index) => (
               <Reveal key={project.id} delay={index * 60}>
                 <SpotlightCard className="h-full p-6">
                   <RecruitCard
                     project={project}
-                    onApply={() => setApplyProject(project)}
+                    isMine={firebaseConfigured && user ? project.ownerId === user.uid : project.isMine}
+                    onApply={() => openApply(project)}
                   />
                 </SpotlightCard>
               </Reveal>
@@ -123,8 +188,8 @@ export default function ProjectsPage() {
                   <button
                     type="button"
                     disabled
-                    title="Firebase 阶段接入真实编辑"
                     className="dark-secondary-btn rounded-2xl px-5 py-3 text-sm font-bold"
+                    title="Firebase 阶段接入真实编辑"
                   >
                     编辑项目（待接入）
                   </button>
@@ -140,7 +205,12 @@ export default function ProjectsPage() {
         title="发起项目招募"
         onClose={() => setShowNewProject(false)}
       >
-        <ProjectForm onClose={() => setShowNewProject(false)} />
+        <ProjectForm
+          firebaseConfigured={firebaseConfigured}
+          user={user}
+          profile={profile}
+          onClose={() => setShowNewProject(false)}
+        />
       </Modal>
 
       <Modal
@@ -148,7 +218,13 @@ export default function ProjectsPage() {
         title={`报名申请：${applyProject?.name}`}
         onClose={() => setApplyProject(null)}
       >
-        <ApplyForm project={applyProject} onClose={() => setApplyProject(null)} />
+        <ApplyForm
+          firebaseConfigured={firebaseConfigured}
+          project={applyProject}
+          user={user}
+          profile={profile}
+          onClose={() => setApplyProject(null)}
+        />
       </Modal>
 
       <Modal
@@ -163,33 +239,33 @@ export default function ProjectsPage() {
             </div>
           )}
 
-          {demoApplicants.map(applicant => (
+          {visibleApplications.map(applicant => (
             <div
               key={applicant.id}
               className="rounded-3xl border border-white/10 bg-white/[0.045] p-5"
             >
               <div className="flex flex-wrap items-center gap-4">
                 <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-sm font-black text-[#07100A]">
-                  {applicant.avatar}
+                  {applicant.applicantAvatar || applicant.avatar}
                 </div>
 
                 <div className="flex-1">
-                  <p className="font-black text-white">{applicant.name}</p>
+                  <p className="font-black text-white">
+                    {applicant.applicantName || applicant.name}
+                  </p>
                   <p className="font-mono text-xs text-white/40">
                     github.com/{applicant.github}
                   </p>
                   <p className="mt-1 text-sm text-white/55">{applicant.intro}</p>
                 </div>
 
-                <span className="tag tag-yellow">{applicant.remain}</span>
+                <span className="tag tag-yellow">
+                  {applicant.status || applicant.remain || "pending"}
+                </span>
 
                 <button
                   type="button"
-                  onClick={() =>
-                    setApplicantActionMessage(
-                      `静态 Demo 已标记通过：${applicant.name}。Firebase 阶段会保存审核状态。`
-                    )
-                  }
+                  onClick={() => approveApplication(applicant)}
                   className="dark-primary-btn rounded-2xl px-4 py-2 text-sm"
                 >
                   通过
@@ -203,7 +279,7 @@ export default function ProjectsPage() {
   );
 }
 
-function RecruitCard({ project, onApply }) {
+function RecruitCard({ project, isMine, onApply }) {
   return (
     <div>
       <div className="flex items-start justify-between gap-5">
@@ -251,7 +327,7 @@ function RecruitCard({ project, onApply }) {
           {project.applicants} 人报名 · {project.repoStars} GitHub Stars
         </p>
 
-        {project.isMine ? (
+        {isMine ? (
           <span className="rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-3 text-sm text-white/35">
             我发起的
           </span>
@@ -280,7 +356,7 @@ function Stat({ value, label }) {
   );
 }
 
-function ProjectForm({ onClose }) {
+function ProjectForm({ firebaseConfigured, user, profile, onClose }) {
   const [form, setForm] = useState({
     name: "",
     theme: "",
@@ -299,7 +375,7 @@ function ProjectForm({ onClose }) {
     setStatus("");
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     const nextErrors = {};
 
     if (!form.name.trim()) nextErrors.name = "请输入项目名称。";
@@ -316,6 +392,18 @@ function ProjectForm({ onClose }) {
 
     if (Object.keys(nextErrors).length > 0) {
       setStatus("请先补全必填信息。");
+      return;
+    }
+
+    if (firebaseConfigured) {
+      if (!user) {
+        setStatus("请先使用 GitHub 登录后再发布项目招募。");
+        return;
+      }
+
+      await createProject({ form, user, profile });
+      setStatus("项目招募已保存到 Firebase。");
+      onClose();
       return;
     }
 
@@ -401,7 +489,7 @@ function ProjectForm({ onClose }) {
   );
 }
 
-function ApplyForm({ project, onClose }) {
+function ApplyForm({ firebaseConfigured, project, user, profile, onClose }) {
   const [form, setForm] = useState({
     intro: "",
     contribution: "",
@@ -416,7 +504,7 @@ function ApplyForm({ project, onClose }) {
     setStatus("");
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     const nextErrors = {};
 
     if (!form.intro.trim()) nextErrors.intro = "请输入自我介绍。";
@@ -427,6 +515,18 @@ function ApplyForm({ project, onClose }) {
 
     if (Object.keys(nextErrors).length > 0) {
       setStatus("请先补全报名信息。");
+      return;
+    }
+
+    if (firebaseConfigured) {
+      if (!user) {
+        setStatus("请先使用 GitHub 登录后再提交报名。");
+        return;
+      }
+
+      await createApplication({ project, form, user, profile });
+      setStatus("报名信息已保存到 Firebase。");
+      onClose();
       return;
     }
 
