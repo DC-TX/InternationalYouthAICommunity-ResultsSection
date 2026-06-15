@@ -1,7 +1,13 @@
 import React, { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 export default function UserMenu({ setCurrentPage }) {
   const [open, setOpen] = useState(false);
+  const { user, profile, firebaseConfigured, signInWithGitHub, signOutUser } = useAuth();
+
+  const displayName = profile?.username || user?.displayName || "李明远";
+  const handle = profile?.handle || profile?.githubAccount || user?.reloadUserInfo?.screenName || "liming-ai";
+  const avatar = profile?.avatar || user?.photoURL || "李";
 
   function goProfile() {
     if (typeof setCurrentPage === "function") {
@@ -10,9 +16,32 @@ export default function UserMenu({ setCurrentPage }) {
     }
   }
 
-  function logout() {
-    alert("当前为静态 Demo，暂未接入真实登出系统。");
+  async function handleSignIn() {
+    await signInWithGitHub();
     setOpen(false);
+  }
+
+  async function handleSignOut() {
+    if (!firebaseConfigured) {
+      alert("当前为静态 Demo，暂未接入真实登出系统。");
+      setOpen(false);
+      return;
+    }
+
+    await signOutUser();
+    setOpen(false);
+  }
+
+  if (firebaseConfigured && !user) {
+    return (
+      <button
+        type="button"
+        onClick={handleSignIn}
+        className="rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3 text-sm font-black text-white transition hover:bg-white/[0.1]"
+      >
+        GitHub 登录
+      </button>
+    );
   }
 
   return (
@@ -29,13 +58,22 @@ export default function UserMenu({ setCurrentPage }) {
         onClick={() => setOpen(prev => !prev)}
         className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.06] px-3 py-2 transition hover:bg-white/[0.1]"
       >
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-xs font-black text-[#050713]">
-          李
-        </div>
+        {user?.photoURL && !profile?.avatar ? (
+          <img
+            src={user.photoURL}
+            alt=""
+            className="h-9 w-9 rounded-xl object-cover"
+            referrerPolicy="no-referrer"
+          />
+        ) : (
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-xs font-black text-[#050713]">
+            {String(avatar).slice(0, 1)}
+          </div>
+        )}
 
         <div className="hidden text-left md:block">
-          <p className="text-xs font-bold text-white">李明远</p>
-          <p className="font-mono text-[11px] text-white/40">@liming-ai</p>
+          <p className="text-xs font-bold text-white">{displayName}</p>
+          <p className="font-mono text-[11px] text-white/40">@{handle}</p>
         </div>
       </button>
 
@@ -57,7 +95,7 @@ export default function UserMenu({ setCurrentPage }) {
             <button
               type="button"
               role="menuitem"
-              onClick={logout}
+              onClick={handleSignOut}
               className="block w-full rounded-xl px-3 py-2 text-left text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300"
             >
               登出
