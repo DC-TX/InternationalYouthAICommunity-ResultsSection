@@ -54,6 +54,13 @@ function normalizeProject(id, data = {}) {
   };
 }
 
+function timestampMs(value) {
+  if (!value) return 0;
+  if (typeof value.toMillis === "function") return value.toMillis();
+  if (typeof value.seconds === "number") return value.seconds * 1000;
+  return 0;
+}
+
 export function subscribeProjects(onNext, onError) {
   if (!firebaseConfigured || !db) {
     onNext(demoProjects);
@@ -155,13 +162,17 @@ export function subscribeOwnerApplications(ownerId, onNext, onError) {
 
   const applicationsQuery = query(
     collection(db, "applications"),
-    where("projectOwnerId", "==", ownerId),
-    orderBy("createdAt", "desc")
+    where("projectOwnerId", "==", ownerId)
   );
 
   return onSnapshot(
     applicationsQuery,
-    snapshot => onNext(snapshot.docs.map(item => ({ id: item.id, ...item.data() }))),
+    snapshot =>
+      onNext(
+        snapshot.docs
+          .map(item => ({ id: item.id, ...item.data() }))
+          .sort((a, b) => timestampMs(b.createdAt) - timestampMs(a.createdAt))
+      ),
     onError
   );
 }
