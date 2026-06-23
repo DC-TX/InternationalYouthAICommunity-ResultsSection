@@ -3,6 +3,14 @@ import { demoUser } from "../data/projects";
 import { useAuth } from "../context/AuthContext";
 import useProjects from "../hooks/useProjects";
 
+const philosophyQuotes = [
+  { quote: "Know thyself.", author: "Socrates" },
+  { quote: "I think, therefore I am.", author: "Descartes" },
+  { quote: "The unexamined life is not worth living.", author: "Socrates" },
+  { quote: "To be is to be perceived.", author: "Berkeley" },
+  { quote: "Man is condemned to be free.", author: "Sartre" }
+];
+
 export default function HomePage({ setCurrentPage }) {
   const { profile } = useAuth();
   const { projects } = useProjects();
@@ -52,7 +60,7 @@ export default function HomePage({ setCurrentPage }) {
           </div>
         </div>
 
-        <div className="academy-hero-board title-rise title-delay-3">
+        <div className="academy-hero-board academy-card-effect title-rise title-delay-3">
           <div className="academy-board-header">
             <span>AI PROJECT BOARD</span>
             <strong>Live Community</strong>
@@ -71,6 +79,8 @@ export default function HomePage({ setCurrentPage }) {
           </div>
         </div>
       </div>
+
+      <ScrollVelocity quotes={philosophyQuotes} />
 
       <section className="academy-section academy-section-tight">
         <div className="academy-section-heading">
@@ -106,9 +116,40 @@ export default function HomePage({ setCurrentPage }) {
   );
 }
 
+function ScrollVelocity({ quotes }) {
+  const repeated = [...quotes, ...quotes, ...quotes];
+  const reversed = [...quotes].reverse();
+  const secondLine = [...reversed, ...reversed, ...reversed];
+
+  return (
+    <section className="scroll-velocity-section" aria-label="哲学短句滚动条">
+      <div className="scroll-velocity-track scroll-velocity-left">
+        {repeated.map((item, index) => (
+          <QuoteItem key={`top-${item.author}-${index}`} item={item} />
+        ))}
+      </div>
+      <div className="scroll-velocity-track scroll-velocity-right">
+        {secondLine.map((item, index) => (
+          <QuoteItem key={`bottom-${item.author}-${index}`} item={item} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function QuoteItem({ item }) {
+  return (
+    <div className="scroll-velocity-item">
+      <strong>{item.quote}</strong>
+      <span>{item.author}</span>
+      <i className="scroll-velocity-dot" aria-hidden="true" />
+    </div>
+  );
+}
+
 function Metric({ value, label, tone }) {
   return (
-    <div className={`academy-metric academy-metric-${tone}`}>
+    <div className={`academy-metric academy-metric-${tone} academy-card-effect`}>
       <strong>{value}</strong>
       <span>{label}</span>
     </div>
@@ -117,7 +158,7 @@ function Metric({ value, label, tone }) {
 
 function ProjectStrip({ project, index }) {
   return (
-    <article className="academy-project-strip">
+    <article className="academy-project-strip academy-card-effect">
       <div>
         <span className="academy-strip-index">0{index + 1}</span>
         <h3>{project.name}</h3>
@@ -133,7 +174,7 @@ function ProjectStrip({ project, index }) {
 
 function PathCard({ index, title, text, action, onClick }) {
   return (
-    <article className="academy-path-card">
+    <article className="academy-path-card academy-card-effect">
       <span>{index}</span>
       <h3>{title}</h3>
       <p>{text}</p>
