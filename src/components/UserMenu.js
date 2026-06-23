@@ -34,11 +34,7 @@ export default function UserMenu({ setCurrentPage }) {
 
   if (firebaseConfigured && !user) {
     return (
-      <button
-        type="button"
-        onClick={handleSignIn}
-        className="rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3 text-sm font-black text-white transition hover:bg-white/[0.1]"
-      >
+      <button type="button" onClick={handleSignIn} className="academy-login-btn">
         GitHub 登录
       </button>
     );
@@ -56,48 +52,35 @@ export default function UserMenu({ setCurrentPage }) {
         aria-expanded={open}
         aria-label="打开用户菜单"
         onClick={() => setOpen(prev => !prev)}
-        className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.06] px-3 py-2 transition hover:bg-white/[0.1]"
+        className="academy-user-button"
       >
         {user?.photoURL && !profile?.avatar ? (
           <img
             src={user.photoURL}
             alt=""
-            className="h-9 w-9 rounded-xl object-cover"
+            className="h-9 w-9 rounded-[10px] object-cover"
             referrerPolicy="no-referrer"
           />
         ) : (
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-xs font-black text-[#050713]">
+          <div className="academy-user-avatar">
             {String(avatar).slice(0, 1)}
           </div>
         )}
 
         <div className="hidden text-left md:block">
-          <p className="text-xs font-bold text-white">{displayName}</p>
-          <p className="font-mono text-[11px] text-white/40">@{handle}</p>
+          <p>{displayName}</p>
+          <span>@{handle}</span>
         </div>
       </button>
 
       {open && (
         <div className="absolute right-0 top-full pt-3">
-          <div
-            role="menu"
-            className="w-52 rounded-2xl border border-white/10 bg-[#080D1D]/95 p-2 shadow-[0_24px_90px_rgba(0,0,0,0.42)] backdrop-blur-xl"
-          >
-            <button
-              type="button"
-              role="menuitem"
-              onClick={goProfile}
-              className="block w-full rounded-xl px-3 py-2 text-left text-sm text-white/80 hover:bg-white/10 hover:text-white"
-            >
+          <div role="menu" className="academy-user-dropdown">
+            <button type="button" role="menuitem" onClick={goProfile}>
               我的主页
             </button>
 
-            <button
-              type="button"
-              role="menuitem"
-              onClick={handleSignOut}
-              className="block w-full rounded-xl px-3 py-2 text-left text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300"
-            >
+            <button type="button" role="menuitem" onClick={handleSignOut} className="danger">
               登出
             </button>
           </div>
