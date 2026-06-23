@@ -1,11 +1,5 @@
 import React from "react";
 import { demoUser } from "../data/projects";
-import BlurText from "../components/homeEffects/BlurText";
-import FloatingLines from "../components/homeEffects/FloatingLines";
-import GradualBlur from "../components/homeEffects/GradualBlur";
-import ClickSpark from "../components/homeEffects/ClickSpark";
-import CrosshairCursor from "../components/homeEffects/CrosshairCursor";
-import PremiumHomeCard from "../components/homeEffects/PremiumHomeCard";
 import { useAuth } from "../context/AuthContext";
 import useProjects from "../hooks/useProjects";
 
@@ -13,226 +7,139 @@ export default function HomePage({ setCurrentPage }) {
   const { profile } = useAuth();
   const { projects } = useProjects();
   const dashboardUser = profile || demoUser;
-  const topProjects = [...projects]
+  const featuredProjects = [...projects]
     .sort((a, b) => b.repoStars - a.repoStars)
     .slice(0, 3);
 
   return (
-    <section className="home-stage">
-      <FloatingLines />
-      <GradualBlur />
-      <ClickSpark />
-      <CrosshairCursor />
+    <section className="academy-home">
+      <div className="academy-intro-sky" aria-hidden="true" />
+      <div className="academy-orbit" aria-hidden="true">
+        <span className="academy-orbit-ring academy-orbit-ring-a" />
+        <span className="academy-orbit-ring academy-orbit-ring-b" />
+        <span className="academy-orbit-dot academy-orbit-dot-a" />
+        <span className="academy-orbit-dot academy-orbit-dot-b" />
+      </div>
 
-      <div className="home-orb home-orb-green" />
-      <div className="home-orb home-orb-cyan" />
-      <div className="home-orb home-orb-violet" />
+      <div className="academy-hero-wrap">
+        <div className="academy-hero-copy">
+          <p className="academy-kicker title-rise">International Youth AI Community</p>
 
-      <div className="relative z-10 px-6 pb-28 pt-40">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid min-h-[76vh] gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-            <div>
-              <div className="mb-7 inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.06] px-4 py-2 backdrop-blur-xl">
-                <span className="h-2 w-2 rounded-full bg-[#4BFF5E] shadow-[0_0_28px_rgba(75,255,94,0.75)]" />
-                <span className="font-mono text-xs uppercase tracking-[0.18em] text-white/62">
-                  GitHub-first AI project community
-                </span>
-              </div>
+          <h1 className="academy-hero-title">
+            <span className="title-rise title-delay-1">少年 AI 创作者</span>
+            <span className="title-rise title-delay-2">从项目走向世界</span>
+          </h1>
 
-              <h1 className="max-w-5xl text-6xl font-black leading-[0.92] tracking-[-0.065em] text-white md:text-8xl">
-                <BlurText text="国际少年" />
-                <br />
-                <BlurText text="AI 社区" delay={160} />
-              </h1>
+          <p className="academy-hero-text title-rise title-delay-3">
+            连接全球少年 AI 项目、GitHub 仓库、成果展示和项目招募，让每一次创作都有被看见、协作和成长的路径。
+          </p>
 
-              <p className="mt-8 max-w-2xl text-lg leading-9 text-white/68">
-                <BlurText
-                  text="连接全球少年 AI 创作者，让每一个项目都能找到合作者、展示舞台与成长方向。"
-                  delay={420}
-                />
-              </p>
+          <div className="academy-hero-actions title-rise title-delay-4">
+            <button
+              type="button"
+              onClick={() => setCurrentPage("projects")}
+              className="academy-btn academy-btn-primary"
+            >
+              发起项目招募
+            </button>
+            <button
+              type="button"
+              onClick={() => setCurrentPage("results")}
+              className="academy-btn academy-btn-secondary"
+            >
+              查看成果展示
+            </button>
+          </div>
+        </div>
 
-              <div className="mt-10 flex flex-wrap gap-4">
-                <button
-                  type="button"
-                  onClick={() => setCurrentPage("results")}
-                  className="home-primary-btn"
-                >
-                  探索成果
-                </button>
+        <div className="academy-hero-board title-rise title-delay-3">
+          <div className="academy-board-header">
+            <span>AI PROJECT BOARD</span>
+            <strong>Live Community</strong>
+          </div>
 
-                <button
-                  type="button"
-                  onClick={() => setCurrentPage("projects")}
-                  className="home-secondary-btn"
-                >
-                  发起项目招募
-                </button>
-              </div>
+          <div className="academy-board-grid">
+            <Metric value={dashboardUser.projectsCount || 0} label="我的项目" tone="blue" />
+            <Metric value={dashboardUser.totalStars || 0} label="收到 Star" tone="coral" />
+            <Metric value={dashboardUser.repositoriesSynced || 0} label="同步仓库" tone="teal" />
+          </div>
 
-              <div className="mt-12 grid max-w-2xl grid-cols-3 gap-3">
-                <HomeMetric value={dashboardUser.projectsCount || 0} label="我的项目" />
-                <HomeMetric value={dashboardUser.totalStars || 0} label="收到 Star" />
-                <HomeMetric value={dashboardUser.repositoriesSynced || 0} label="同步仓库" />
-              </div>
-            </div>
-
-            <PremiumHomeCard className="gradient-frame p-0">
-              <div className="border-b border-white/10 bg-white/[0.045] px-6 py-4">
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-2">
-                    <span className="h-3 w-3 rounded-full bg-red-400/80" />
-                    <span className="h-3 w-3 rounded-full bg-yellow-300/80" />
-                    <span className="h-3 w-3 rounded-full bg-[#4BFF5E]/80" />
-                  </div>
-
-                  <span className="font-mono text-xs text-white/42">
-                    github sync / live preview
-                  </span>
-                </div>
-              </div>
-
-              <div className="p-7">
-                <p className="text-sm text-white/42">Live Community Demo</p>
-
-                <h2 className="mt-2 text-4xl font-black tracking-[-0.04em] text-white">
-                  Project Match
-                </h2>
-
-                <div className="mt-8 space-y-4">
-                  {topProjects.map(project => (
-                    <RepositoryCard key={project.id} project={project} />
-                  ))}
-                </div>
-
-                <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4">
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="text-sm font-semibold text-white/62">
-                      推荐逻辑
-                    </span>
-
-                    <span className="rounded-full border border-[#4BFF5E]/25 bg-[#4BFF5E]/10 px-3 py-1 text-xs font-bold text-[#A4FFAD]">
-                      Agent + Star + GitHub
-                    </span>
-                  </div>
-
-                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/8">
-                    <div className="home-progress-bar" />
-                  </div>
-                </div>
-              </div>
-            </PremiumHomeCard>
+          <div className="academy-feature-list">
+            {featuredProjects.map((project, index) => (
+              <ProjectStrip key={project.id} project={project} index={index} />
+            ))}
           </div>
         </div>
       </div>
 
-      <HomeFocusSection setCurrentPage={setCurrentPage} />
+      <section className="academy-section academy-section-tight">
+        <div className="academy-section-heading">
+          <p className="academy-kicker">Product Focus</p>
+          <h2>一个社区，三条项目成长路径</h2>
+        </div>
+
+        <div className="academy-path-grid">
+          <PathCard
+            index="01"
+            title="成果展示"
+            text="用 README 摘要、GitHub 仓库、Star、提交信息和 Demo 预览展示项目成果。"
+            action="进入成果"
+            onClick={() => setCurrentPage("results")}
+          />
+          <PathCard
+            index="02"
+            title="项目招募"
+            text="围绕项目阶段、技能标签、GitHub 仓库和报名表组织协作，而不是只发布标题。"
+            action="进入招募"
+            onClick={() => setCurrentPage("projects")}
+          />
+          <PathCard
+            index="03"
+            title="个人主页"
+            text="记录 GitHub 身份、个人项目、收到的 Star 和仓库同步数据，形成可信创作者档案。"
+            action="查看主页"
+            onClick={() => setCurrentPage("profile")}
+          />
+        </div>
+      </section>
     </section>
   );
 }
 
-function HomeMetric({ value, label }) {
+function Metric({ value, label, tone }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.055] p-4 backdrop-blur-xl">
-      <div className="text-3xl font-black tracking-[-0.04em] text-white">
-        {value}
-      </div>
-      <div className="mt-1 text-xs text-white/45">{label}</div>
+    <div className={`academy-metric academy-metric-${tone}`}>
+      <strong>{value}</strong>
+      <span>{label}</span>
     </div>
   );
 }
 
-function RepositoryCard({ project }) {
+function ProjectStrip({ project, index }) {
   return (
-    <div className="home-repo-card">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <span className="rounded-full border border-[#35E7FF]/20 bg-[#35E7FF]/10 px-3 py-1 text-xs font-bold text-[#8FF3FF]">
-            {project.stage}
-          </span>
-
-          <h3 className="mt-3 text-lg font-black text-white">{project.name}</h3>
-
-          <p className="mt-1 font-mono text-xs text-white/42">
-            {project.githubRepo}
-          </p>
-        </div>
-
-        <div className="text-right">
-          <p className="text-2xl font-black text-[#4BFF5E]">
-            {project.repoStars}
-          </p>
-          <p className="text-xs text-white/38">repo stars</p>
-        </div>
+    <article className="academy-project-strip">
+      <div>
+        <span className="academy-strip-index">0{index + 1}</span>
+        <h3>{project.name}</h3>
+        <p>{project.githubRepo}</p>
       </div>
-
-      <div className="my-4 h-px bg-gradient-to-r from-transparent via-[#4BFF5E]/55 to-transparent" />
-
-      <p className="text-sm leading-6 text-white/50">{project.lastCommit}</p>
-    </div>
+      <div className="academy-strip-score">
+        <strong>{project.repoStars}</strong>
+        <span>Repo Stars</span>
+      </div>
+    </article>
   );
 }
 
-function HomeFocusSection({ setCurrentPage }) {
-  const cards = [
-    {
-      title: "成果展示",
-      text: "展示 README 摘要、GitHub Repo、Repo Star、最后提交与 Demo 预览，让项目成果更可信。",
-      page: "results"
-    },
-    {
-      title: "项目招募",
-      text: "围绕项目阶段、技能标签、GitHub 仓库和报名表进行协作，而不是只发布一个标题。",
-      page: "projects"
-    },
-    {
-      title: "GitHub 耦合",
-      text: "用户绑定 GitHub，项目绑定仓库，未来同步 README、Star、提交记录和贡献信息。",
-      page: "profile"
-    }
-  ];
-
+function PathCard({ index, title, text, action, onClick }) {
   return (
-    <div className="relative z-10 border-t border-white/10 bg-[#050713]/72 px-6 py-28 backdrop-blur-xl">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-14 max-w-3xl">
-          <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#4BFF5E]">
-            Product Focus
-          </p>
-
-          <h2 className="mt-4 text-5xl font-black tracking-[-0.055em] text-white md:text-6xl">
-            三个页面围绕一个核心：把 AI 项目真正做出来
-          </h2>
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-3">
-          {cards.map((card, index) => (
-            <PremiumHomeCard key={card.title} className="home-focus-card p-7">
-              <div className="mb-16 flex items-center justify-between">
-                <span className="rounded-full border border-white/10 bg-white/8 px-3 py-1 text-xs font-bold text-white/55">
-                  0{index + 1}
-                </span>
-              </div>
-
-              <h3 className="text-4xl font-black tracking-[-0.045em] text-white">
-                {card.title}
-              </h3>
-
-              <p className="mt-5 min-h-[116px] leading-8 text-white/55">
-                {card.text}
-              </p>
-
-              <button
-                type="button"
-                onClick={() => setCurrentPage(card.page)}
-                className="mt-8 rounded-2xl border border-white/12 bg-white/7 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/12"
-              >
-                进入页面
-              </button>
-            </PremiumHomeCard>
-          ))}
-        </div>
-      </div>
-    </div>
+    <article className="academy-path-card">
+      <span>{index}</span>
+      <h3>{title}</h3>
+      <p>{text}</p>
+      <button type="button" onClick={onClick} className="academy-link-btn">
+        {action}
+      </button>
+    </article>
   );
 }
