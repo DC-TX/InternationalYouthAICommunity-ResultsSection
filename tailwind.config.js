@@ -4,44 +4,49 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        paper: "#070A12",
-        bone: "#0B1020",
-        ink: "#F8FAFC",
-        charcoal: "#CBD5E1",
-        mute: "#8A93A6",
-        line: "rgba(255,255,255,0.12)",
-        card: "rgba(255,255,255,0.075)",
+        paper: "#FBFAF6",
+        bone: "#F1EFE6",
+        ink: "#15141A",
+        charcoal: "#5B5862",
+        mute: "#928E83",
+        line: "#E7E4D9",
+        card: "rgba(255,255,255,0.72)",
 
-        premiumBg: "#070A12",
-        premiumPanel: "#0B1020",
-        premiumCard: "rgba(255,255,255,0.075)",
-        premiumText: "#F8FAFC",
-        premiumMute: "#8A93A6",
-        premiumLine: "rgba(255,255,255,0.12)",
+        premiumBg: "#FBFAF6",
+        premiumPanel: "#F1EFE6",
+        premiumCard: "rgba(255,255,255,0.72)",
+        premiumText: "#15141A",
+        premiumMute: "#5B5862",
+        premiumLine: "#E7E4D9",
 
-        neonGreen: "#4BFF5E",
-        electricCyan: "#35E7FF",
-        violet: "#9B5CFF",
-        gold: "#FFD166",
+        neonGreen: "#2536E8",
+        electricCyan: "#0C8C7A",
+        violet: "#2536E8",
+        gold: "#FFC400",
         github: "#24292F",
 
-        paleBlue: "#142B42",
-        paleGreen: "#16351F",
-        paleYellow: "#3A3214",
-        paleRed: "#3A171A",
-        palePurple: "#241A3A"
+        paleBlue: "#E7EAFF",
+        paleGreen: "#DDEFEA",
+        paleYellow: "#FFF3BF",
+        paleRed: "#FFE3DC",
+        palePurple: "#E7EAFF",
+
+        brand: "#2536E8",
+        coral: "#FF4A2B",
+        teal: "#0C8C7A",
+        sun: "#FFC400"
       },
       boxShadow: {
-        soft: "0 20px 80px rgba(0,0,0,0.28)",
-        glowGreen: "0 0 45px rgba(75,255,94,0.24)",
-        glowCyan: "0 0 45px rgba(53,231,255,0.22)",
-        glowViolet: "0 0 45px rgba(155,92,255,0.22)"
+        soft: "0 24px 70px rgba(21,20,26,0.12)",
+        glowGreen: "0 14px 34px rgba(37,54,232,0.24)",
+        glowCyan: "0 14px 34px rgba(12,140,122,0.18)",
+        glowViolet: "0 14px 34px rgba(255,74,43,0.16)"
       },
       fontFamily: {
         sans: [
-          "Inter",
+          "Noto Sans SC",
+          "Hanken Grotesk",
           "SF Pro Display",
-          "Geist Sans",
           "Helvetica Neue",
           "Arial",
           "sans-serif"
