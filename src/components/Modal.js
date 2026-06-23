@@ -26,30 +26,18 @@ export default function Modal({
   if (!open) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 px-4 backdrop-blur-xl"
-      onClick={onClose}
-    >
+    <div className="academy-modal-backdrop" onClick={onClose}>
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
-        className={`modal-scroll w-full ${width} rounded-[1.75rem] border border-white/10 bg-[#080D1D]/95 p-6 shadow-[0_30px_120px_rgba(0,0,0,0.55)]`}
+        className={`academy-modal modal-scroll w-full ${width}`}
         onClick={event => event.stopPropagation()}
       >
-        <div className="mb-5 flex items-start justify-between gap-4 border-b border-white/10 pb-4">
-          <h3
-            id="modal-title"
-            className="text-3xl font-black leading-tight tracking-[-0.04em] text-white"
-          >
-            {title}
-          </h3>
+        <div className="academy-modal-header">
+          <h3 id="modal-title">{title}</h3>
 
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-xl border border-white/10 bg-white/[0.06] px-4 py-2 text-sm font-bold text-white/60 transition hover:bg-white/10 hover:text-white"
-          >
+          <button type="button" onClick={onClose}>
             关闭
           </button>
         </div>
